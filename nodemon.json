@@ -1,0 +1,6 @@
+{
+    "watch": ["src"],
+    "ext": ".ts,.json",
+    "ignore": ["orders.json"],
+    "exec": "ts-node ./src/index.ts --transpileOnly"
+  }
