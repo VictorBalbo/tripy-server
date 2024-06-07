@@ -12,7 +12,7 @@
 	"plugins": ["@typescript-eslint"],
 	"rules": {
 		"semi": ["error", "never"],
-		"quotes": ["error", "double"],
+		"quotes": ["error", "single"],
 		"no-mixed-spaces-and-tabs": ["error"],
 		"indent": ["error", "tab"]
 	}
