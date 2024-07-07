@@ -8,3 +8,5 @@ export const db_host = process.env.DB_HOST
 export const db_name = process.env.DB_NAME
 export const db_username = process.env.DB_USERNAME
 export const db_password = process.env.DB_PASSWORD
+
+export const redis_connection_string = process.env.REDIS_CONNECTION_STRING
