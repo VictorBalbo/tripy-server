@@ -23,6 +23,7 @@ export class WanderlogProvider {
 		const placeMetadata = placeMetadataResponse?.data?.find(p => p)
 
 		const place: Place = {
+			_id: placeId,
 			placeId: placeId,
 			name: placeMetadata?.name ?? placeDetails?.name,
 			description:

@@ -1,4 +1,5 @@
 export interface Place {
+  _id: string
   placeId: string
   name?: string
   description?: string
