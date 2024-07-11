@@ -39,6 +39,7 @@ export class WanderlogProvider {
 			businessStatus: placeDetails?.business_status,
 			openingHours: placeDetails?.opening_hours,
 			mapsUrl: placeDetails?.url,
+			coordinates: placeDetails?.geometry.location
 		}
 		return place
 	}

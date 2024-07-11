@@ -7,6 +7,12 @@ export interface WanderlogPlaceDetails {
 	opening_hours: OpeningHours
 	url: string
 	website: string
+	geometry: {
+		location: {
+			lat: number,
+			lng: number,
+		}
+	}
 }
 
 export interface OpeningHours {

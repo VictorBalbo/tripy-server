@@ -12,6 +12,7 @@ export interface Place {
   businessStatus?: string
   mapsUrl?: string
   openingHours?: OpeningHours
+  coordinates?: Coordinates
 }
 
 export interface OpeningHours {
@@ -20,4 +21,8 @@ export interface OpeningHours {
     close: { day: number, time: string}
   }]
   weekdayText: string[]
+}
+export interface Coordinates {
+  lat: number
+  lng: number
 }
