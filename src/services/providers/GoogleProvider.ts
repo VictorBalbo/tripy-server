@@ -20,8 +20,10 @@ export class GoogleProvider {
 		const response = await fetch(URL_FIND_PLACE)
 		const data = await response.json() as GetPlaceByNameResponse
 		if (data.candidates.length) {
-			return data.candidates[0].place_id
+			return data.candidates
+				.filter(c => !c.place_id)
+				.map(c => c.place_id)
 		}
-		return null
+		return []
 	}
 }

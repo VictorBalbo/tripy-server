@@ -17,9 +17,9 @@ export class PlaceDetailService {
 	}
 
 	static getPlaceByName = async (name: string) => {
-		const placeId = await GoogleProvider.getPlaceByName(name)
-		if (placeId) {
-			return this.getPlaceById(placeId)
-		}
+		const placesId = await GoogleProvider.getPlaceByName(name)
+		const placesPromise = placesId.map(p => this.getPlaceById(p))
+		const places = await Promise.all(placesPromise)
+		return places
 	}
 }
