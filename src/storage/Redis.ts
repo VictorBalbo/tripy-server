@@ -4,6 +4,7 @@ import { Place } from '../models/Place'
 
 export class Redis {
 	private static client?: RedisDB
+	private static ttl: number = 60*60*24 // 1 day
 
 	public static connectAsync = async () => {
 		if (Redis.client) {
@@ -21,9 +22,13 @@ export class Redis {
 		}
 	}
 
-	public static savePlaceAsync = async (place: Place) => {
+	public static savePlaceAsync = async (place: Place, temp: boolean) => {
 		await Redis.connectAsync()
 		const placeStr = JSON.stringify(place)
-		await Redis.client?.set(place.placeId, placeStr)
+		if(temp){
+			await Redis.client?.set(place.placeId, placeStr, 'EX', Redis.ttl)
+		} else {
+			await Redis.client?.set(place.placeId, placeStr)
+		}
 	}
 }

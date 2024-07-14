@@ -21,7 +21,7 @@ export class GoogleProvider {
 		const data = await response.json() as GetPlaceByNameResponse
 		if (data.candidates.length) {
 			return data.candidates
-				.filter(c => !c.place_id)
+				.filter(c => c.place_id)
 				.map(c => c.place_id)
 		}
 		return []
