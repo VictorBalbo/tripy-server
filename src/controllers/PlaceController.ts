@@ -19,10 +19,10 @@ PlaceController.get(getPlaceAutocompleteUri, async (req, res, next) => {
 	try {
 		const name = req.params.name
 		const coordinates: Coordinates = {
-			lat: parseInt(req.query.lat as string),
-			lng: parseInt(req.query.lng as string)
+			lat: parseFloat(req.query.lat as string),
+			lng: parseFloat(req.query.lng as string)
 		}
-		const radius = parseInt(req.query.radius as string)
+		const radius = parseFloat(req.query.radius as string)
 		const token = req.query.token as string ?? self.crypto.randomUUID()
 
 		const place = await PlaceDetailService.getLocationAutocomplete(name, coordinates, radius, token)

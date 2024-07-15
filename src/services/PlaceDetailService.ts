@@ -25,7 +25,7 @@ export class PlaceDetailService {
 	}
 
 	static getLocationAutocomplete = async (name: string, coordinates: Coordinates, radius: number, token?: string) => {
-		let places = await WanderlogProvider.getLocationAutocomplete(name, coordinates, radius, token)
+		const places = await WanderlogProvider.getLocationAutocomplete(name, coordinates, radius, token)
 		// if(!places?.length) {
 		// 	const placesId = await GoogleProvider.getPlaceByName(name)
 		// 	const placesPromise = placesId.map(p => this.getPlaceById(p, true))

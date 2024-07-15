@@ -44,7 +44,7 @@ export class WanderlogProvider {
 	}
 
 	static getLocationAutocomplete = async (name: string, coordinates: Coordinates, radius: number, token?: string) => {
-		const URL = `https://wanderlog.com/api/placesAPI/autocomplete/v2?request={"input":"${name}","sessiontoken":${token},"location":{"longitude":${coordinates.lng},"latitude":${coordinates.lat} },"radius":${radius},"language":"en"}`
+		const URL = `https://wanderlog.com/api/placesAPI/autocomplete/v2?request={"input":"${name}","sessiontoken":"${token}","location":{"longitude":${coordinates.lng},"latitude":${coordinates.lat} },"radius":${radius},"language":"en"}`
 		const responsePromise = await fetch(URL).then(data => data.json() as Promise<GetWanderlogAutocompleteResponse>)
 
 		const autocomplete = responsePromise.data
