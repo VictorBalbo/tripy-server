@@ -1,6 +1,5 @@
-import { Place } from '../../models/Place'
-import { GetWanderlogPlaceDetailsResponse } from '../../models/Wanderlog/'
-import { GetWanderlogPlaceMetadataResponse } from '../../models/Wanderlog/'
+import { Coordinates, Place } from '../../models/Place'
+import { GetWanderlogAutocompleteResponse, GetWanderlogPlaceDetailsResponse, GetWanderlogPlaceMetadataResponse } from '../../models/Wanderlog/'
 
 export class WanderlogProvider {
 	static getPlaceById = async (placeId: string) => {
@@ -42,5 +41,23 @@ export class WanderlogProvider {
 			coordinates: placeDetails?.geometry.location
 		}
 		return place
+	}
+
+	static getLocationAutocomplete = async (name: string, coordinates: Coordinates, radius: number, token?: string) => {
+		const URL = `https://wanderlog.com/api/placesAPI/autocomplete/v2?request={"input":"${name}","sessiontoken":${token},"location":{"longitude":${coordinates.lng},"latitude":${coordinates.lat} },"radius":${radius},"language":"en"}`
+		const responsePromise = await fetch(URL).then(data => data.json() as Promise<GetWanderlogAutocompleteResponse>)
+
+		const autocomplete = responsePromise.data
+
+		return autocomplete?.filter(a => a.place_id)?.map(a => {
+			const place: Place = {
+				_id: a.place_id ?? '',
+				placeId: a.place_id ?? '',
+				name: a.structured_formatting?.main_text,
+				address: a.structured_formatting?.secondary_text,
+				description: a.description,
+			}
+			return place
+		})
 	}
 }

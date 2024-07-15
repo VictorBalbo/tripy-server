@@ -1,10 +1,10 @@
 import { Router } from 'express'
 import { PlaceDetailService } from '../services/PlaceDetailService'
+import { Coordinates } from '../models/Place'
 
 export const PlaceController = Router()
-const getPlaceByIdUri = '/place/:id'
-const getPlaceByNameUri = '/places/:name'
 
+const getPlaceByIdUri = '/place/:id'
 PlaceController.get(getPlaceByIdUri, async (req, res, next) => {
 	try {
 		const place = await PlaceDetailService.getPlaceById(req.params.id)
@@ -14,6 +14,25 @@ PlaceController.get(getPlaceByIdUri, async (req, res, next) => {
 	}
 })
 
+const getPlaceAutocompleteUri = '/places/autocomplete/:name'
+PlaceController.get(getPlaceAutocompleteUri, async (req, res, next) => {
+	try {
+		const name = req.params.name
+		const coordinates: Coordinates = {
+			lat: parseInt(req.query.lat as string),
+			lng: parseInt(req.query.lng as string)
+		}
+		const radius = parseInt(req.query.radius as string)
+		const token = req.query.token as string ?? self.crypto.randomUUID()
+
+		const place = await PlaceDetailService.getLocationAutocomplete(name, coordinates, radius, token)
+		res.json(place)
+	} catch (e) {
+		next(e)
+	}
+})
+
+const getPlaceByNameUri = '/places/:name'
 PlaceController.get(getPlaceByNameUri, async (req, res, next) => {
 	try {
 		const place = await PlaceDetailService.getPlaceByName(req.params.name)

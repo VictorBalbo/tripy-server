@@ -1,3 +1,4 @@
+import { Coordinates } from '../models/Place'
 import { GoogleProvider } from './providers/GoogleProvider'
 import { TripyProvider } from './providers/TripyProvider'
 import { WanderlogProvider } from './providers/WanderlogProvider'
@@ -20,6 +21,16 @@ export class PlaceDetailService {
 		const placesId = await GoogleProvider.getPlaceByName(name)
 		const placesPromise = placesId.map(p => this.getPlaceById(p, true))
 		const places = await Promise.all(placesPromise)
+		return places
+	}
+
+	static getLocationAutocomplete = async (name: string, coordinates: Coordinates, radius: number, token?: string) => {
+		let places = await WanderlogProvider.getLocationAutocomplete(name, coordinates, radius, token)
+		// if(!places?.length) {
+		// 	const placesId = await GoogleProvider.getPlaceByName(name)
+		// 	const placesPromise = placesId.map(p => this.getPlaceById(p, true))
+		// 	places = await Promise.all(placesPromise)
+		// }
 		return places
 	}
 }
