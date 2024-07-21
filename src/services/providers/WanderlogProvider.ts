@@ -29,6 +29,7 @@ export class WanderlogProvider {
 				placeMetadata?.generatedDescription ?? placeMetadata?.description,
 			categories: placeMetadata?.categories,
 			address: placeMetadata?.address ?? placeDetails?.formatted_address,
+			vicinity: placeDetails?.vicinity,
 			rating: placeMetadata?.rating,
 			website: placeMetadata?.website ?? placeDetails?.website,
 			phoneNumber:

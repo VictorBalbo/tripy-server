@@ -5,6 +5,7 @@ export interface Place {
   description?: string
   categories?: string[]
   address?: string
+  vicinity?: string
   rating?: number
   website?: string
   phoneNumber?: string
