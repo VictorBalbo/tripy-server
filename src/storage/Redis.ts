@@ -1,5 +1,5 @@
 import RedisDB from 'ioredis'
-import { redis_connection_string } from '../constants'
+import { redis_url } from '../constants'
 import { Place } from '../models/Place'
 
 export class Redis {
@@ -10,7 +10,7 @@ export class Redis {
 		if (Redis.client) {
 			return
 		}
-		Redis.client = new RedisDB(redis_connection_string!)
+		Redis.client = new RedisDB(redis_url!)
 	}
 	public static findPlaceByIdAsync = async (placeId: string) => {
 		await Redis.connectAsync()
