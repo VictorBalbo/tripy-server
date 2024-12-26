@@ -53,8 +53,10 @@ export class Redis {
 			} else {
 				await redis.set(place.placeId, placeStr)
 			}
+			return true
 		} catch (e) {
 			console.log('Error on Set:', e)
+			return false
 		}
 	}
 }

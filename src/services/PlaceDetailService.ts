@@ -5,15 +5,21 @@ import { WanderlogProvider } from './providers/WanderlogProvider'
 
 export class PlaceDetailService {
 	static getPlaceById = async (placeId: string, temp = false) => {
+		// Try get from Cache
 		let place = await TripyProvider.getPlaceById(placeId)
+		if(place){
+			return place
+		}
 
-		if (!place) {
-			place = await WanderlogProvider.getPlaceById(placeId)
-			if (place) {
-				await TripyProvider.setPlaceById(place, temp)
+		// Get from Wanderlog
+		place = await WanderlogProvider.getPlaceById(placeId)
+		if (place) {
+			const addedToCache = await TripyProvider.setPlaceById(place, temp)
+			if(addedToCache) {
 				console.log('Added to cache from Wanderlog', placeId)
 			}
 		}
+		
 		return place
 	}
 

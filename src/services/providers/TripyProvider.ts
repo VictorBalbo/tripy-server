@@ -9,6 +9,6 @@ export class TripyProvider {
 	}
 
 	static setPlaceById = async (place: Place, temp: boolean) => {
-		await Redis.savePlaceAsync(place, temp)
+		return await Redis.savePlaceAsync(place, temp)
 	}
 }
