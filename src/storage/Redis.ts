@@ -6,15 +6,37 @@ export class Redis {
 	private static client?: RedisDB
 	private static ttl: number = 60*60*24 // 1 day
 
-	public static connectAsync = async () => {
-		if (Redis.client) {
-			return
+	public static getConnectionAsync = async () => {
+		if (Redis.client && Redis.client.status === 'ready') {
+			return Redis.client
 		}
-		Redis.client = new RedisDB(redis_url!)
+
+		if(Redis.client) {
+			Redis.client.disconnect()
+		}
+
+		Redis.client = new RedisDB(redis_url!, {
+			lazyConnect: true,
+		})
+		Redis.client.on('error', (error) => {
+			if(error.message.includes('getaddrinfo ENOTFOUND')) {
+				Redis.client?.disconnect()
+			}
+		})
+
+		await Redis.client.connect()
+		return Redis.client
 	}
 	public static findPlaceByIdAsync = async (placeId: string) => {
-		await Redis.connectAsync()
-		const placeStr = await Redis.client?.get(placeId)
+		let placeStr
+		try {
+			const redis = await Redis.getConnectionAsync()
+			console.log()
+			placeStr = await redis.get(placeId)
+		} catch (e) {
+			console.log('Error on Find:', e)
+			return undefined
+		}
 		if (placeStr) {
 			return JSON.parse(placeStr) as Place
 		} else {
@@ -23,12 +45,16 @@ export class Redis {
 	}
 
 	public static savePlaceAsync = async (place: Place, temp: boolean) => {
-		await Redis.connectAsync()
-		const placeStr = JSON.stringify(place)
-		if(temp){
-			await Redis.client?.set(place.placeId, placeStr, 'EX', Redis.ttl)
-		} else {
-			await Redis.client?.set(place.placeId, placeStr)
+		try {
+			const redis = await Redis.getConnectionAsync()
+			const placeStr = JSON.stringify(place)
+			if(temp){
+				await redis.set(place.placeId, placeStr, 'EX', Redis.ttl)
+			} else {
+				await redis.set(place.placeId, placeStr)
+			}
+		} catch (e) {
+			console.log('Error on Set:', e)
 		}
 	}
 }
