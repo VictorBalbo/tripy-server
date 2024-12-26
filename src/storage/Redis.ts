@@ -31,7 +31,6 @@ export class Redis {
 		let placeStr
 		try {
 			const redis = await Redis.getConnectionAsync()
-			console.log()
 			placeStr = await redis.get(placeId)
 		} catch (e) {
 			console.log('Error on Find:', e)
