@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import { PlaceController, TripController } from './controllers'
 import { port, environment } from './constants'
-import { AppDataSource } from './storage'
+import { getDatabaseConnection } from './storage'
 
 export const App = express()
 
@@ -11,11 +11,7 @@ App.use(express.json())
 App.use(cors())
 
 // Database connection
-AppDataSource.initialize()
-	.then(() => {
-		console.log('Connected')
-	})
-	.catch((error) => console.log(error))
+getDatabaseConnection()
 
 // Routes
 App.get('/', (req, res) => {

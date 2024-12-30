@@ -1,13 +1,14 @@
 import { Trip } from '../models'
-import { AppDataSource } from '../storage/DataSource'
+import { getRepository } from '../storage/DataSource'
 
 export class TripService {
-	static tripRepository = AppDataSource.getRepository(Trip)
 	static setTrip = async (trip: Trip) => {
-    return TripService.tripRepository.save(trip)
+		const tripRepository = await getRepository(Trip)
+		return tripRepository.save(trip)
 	}
 
 	static getTrip = async (id: string) => {
-		return TripService.tripRepository.findOneBy({ id })
+		const tripRepository = await getRepository(Trip)
+		return tripRepository.findOneBy({ id })
 	}
 }

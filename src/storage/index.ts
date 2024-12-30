@@ -1,4 +1,4 @@
-import { AppDataSource } from './DataSource'
+import { AppDataSource, getDatabaseConnection, getRepository } from './DataSource'
 import { Redis } from './Redis'
 
-export { AppDataSource, Redis }
+export { AppDataSource, getDatabaseConnection, getRepository, Redis }
