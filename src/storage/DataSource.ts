@@ -1,14 +1,15 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import { Activity, Destination, Housing, Place, Transportation, Trip} from '../models'
+import { db_host, db_name, db_password, db_port, db_username } from '../constants'
 
 export const AppDataSource = new DataSource({
 	type: 'mssql',
-	host: 'tripy.database.windows.net',
-	port: 1433,
-	username: 'TripyApp',
-	password: 'uHg.P-DY8X!i3qnH9HvMBuFfr78DajpesWQrsx3R',
-	database: 'Tripy',
+	host: db_host,
+	port: db_port,
+	username: db_username,
+	password: db_password,
+	database: db_name,
 	entities: [Activity, Destination, Housing, Place, Transportation, Trip],
 	synchronize: true,
 	logging: false,
