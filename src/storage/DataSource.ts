@@ -5,23 +5,22 @@ import { db_host, db_name, db_password, db_port, db_username } from '../constant
 
 let connection: DataSource | null = null
 
-export const AppDataSource = new DataSource({
-	type: 'postgres',
-	host: db_host,
-	port: db_port,
-	username: db_username,
-	password: db_password,
-	database: db_name,
-	entities: [Activity, Destination, Housing, Place, Transportation, Trip],
-	synchronize: true,
-	logging: false,
-	ssl: true,
-
-})
-
 export const getDatabaseConnection = async () => {
 	try {
 		if (!connection) {
+			const AppDataSource = new DataSource({
+				type: 'postgres',
+				host: db_host,
+				port: db_port,
+				username: db_username,
+				password: db_password,
+				database: db_name,
+				entities: [Activity, Destination, Housing, Place, Transportation, Trip],
+				synchronize: true,
+				logging: false,
+				ssl: true,
+			
+			})
 			connection = await AppDataSource.initialize()
 			console.log('Connected')
 		}
