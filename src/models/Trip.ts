@@ -17,10 +17,10 @@ export class Trip {
 	name: string
 
 	@Column()
-	startDate: string
+	startDate: Date
 
 	@Column()
-	endDate: string
+	endDate: Date
 
 	@OneToMany(() => Destination, (destination) => destination.trip, {
 		eager: true,
