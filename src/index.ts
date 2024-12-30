@@ -1,13 +1,21 @@
 import express from 'express'
 import cors from 'cors'
-import { PlaceController } from './controllers/PlaceController'
+import { PlaceController, TripController } from './controllers'
 import { port, environment } from './constants'
+import { AppDataSource } from './storage'
 
 export const App = express()
 
 // Middlewares
 App.use(express.json())
 App.use(cors())
+
+// Database connection
+AppDataSource.initialize()
+	.then(() => {
+		console.log('Connected')
+	})
+	.catch((error) => console.log(error))
 
 // Routes
 App.get('/', (req, res) => {
@@ -17,6 +25,7 @@ App.get('/', (req, res) => {
 })
 
 App.use(PlaceController)
+App.use(TripController)
 
 // Start Server if not on test env
 if (environment !== 'Test') {

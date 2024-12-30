@@ -1,7 +1,5 @@
-import { Coordinates } from '../models/Place'
-import { GoogleProvider } from './providers/GoogleProvider'
-import { TripyProvider } from './providers/TripyProvider'
-import { WanderlogProvider } from './providers/WanderlogProvider'
+import { Coordinates } from '../models'
+import { GoogleProvider, TripyProvider, WanderlogProvider } from './providers'
 
 export class PlaceDetailService {
 	static getPlaceById = async (placeId: string, temp = false) => {

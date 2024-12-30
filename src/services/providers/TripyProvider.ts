@@ -1,4 +1,4 @@
-import { Place } from '../../models/Place'
+import { Place } from '../../models'
 import { Redis } from '../../storage/Redis'
 
 export class TripyProvider {

@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { PlaceDetailService } from '../services/PlaceDetailService'
-import { Coordinates } from '../models/Place'
+import { Coordinates } from '../models'
 
 export const PlaceController = Router()
 

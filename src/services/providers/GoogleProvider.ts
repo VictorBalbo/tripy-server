@@ -1,6 +1,5 @@
 import { GOOGLE_MAPS_KEY } from '../../constants'
-import { GetPlaceByIdResponse } from '../../models/GoogleResponses/GetPlaceByIdResponse'
-import { GetPlaceByNameResponse } from '../../models/GoogleResponses/GetPlaceByNameResponse'
+import { GetPlaceByIdResponse, GetPlaceByNameResponse } from '../../models/GoogleResponses'
 
 export class GoogleProvider {
 	static fieldsToGet =
