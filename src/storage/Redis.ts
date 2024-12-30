@@ -1,6 +1,6 @@
 import RedisDB from 'ioredis'
 import { redis_url } from '../constants'
-import { Place } from '../models/Place'
+import { Place } from '../models'
 
 export class Redis {
 	private static client?: RedisDB
@@ -48,9 +48,9 @@ export class Redis {
 			const redis = await Redis.getConnectionAsync()
 			const placeStr = JSON.stringify(place)
 			if(temp){
-				await redis.set(place.placeId, placeStr, 'EX', Redis.ttl)
+				await redis.set(place.id, placeStr, 'EX', Redis.ttl)
 			} else {
-				await redis.set(place.placeId, placeStr)
+				await redis.set(place.id, placeStr)
 			}
 			return true
 		} catch (e) {
