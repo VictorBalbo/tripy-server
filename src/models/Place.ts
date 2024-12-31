@@ -25,7 +25,7 @@ export class Place {
 	@Column({ nullable: true })
 	vicinity?: string
   
-	@Column({ nullable: true })
+	@Column({ type: 'float', nullable: true })
 	rating?: number
   
 	@Column({ nullable: true })
