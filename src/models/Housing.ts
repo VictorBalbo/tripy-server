@@ -10,12 +10,15 @@ export class Housing {
 	@ManyToOne(() => Place, (Place) => Place.id, { eager: true, cascade: true })
 	@JoinColumn()
 	place: Place
+
+	@Column({nullable: true})
+	name?: string
 	
   @Column({nullable: true})
-	checkin?: string
+	checkin?: Date
 	
   @Column({nullable: true})
-	checkout?: string
+	checkout?: Date
 	
   @Column({nullable: true})
 	website?: string
