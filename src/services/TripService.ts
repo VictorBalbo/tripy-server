@@ -9,6 +9,19 @@ export class TripService {
 
 	static getTrip = async (id: string) => {
 		const tripRepository = await getRepository(Trip)
-		return tripRepository.findOneBy({ id })
+		return tripRepository.findOne({
+			where: {
+				id,
+			},
+			order: {
+				startDate: 'ASC',
+				destinations: {
+					startDate: 'ASC',
+				},
+				transportations: {
+					startDate: 'ASC',
+				},
+			},
+		})
 	}
 }
