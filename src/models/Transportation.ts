@@ -33,7 +33,7 @@ export class Transportation {
 	@Column({ nullable: true })
 	endDate?: Date
 
-	@Column({ nullable: true })
+	@Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
 	price?: number
 
 	@Column({ nullable: true })
