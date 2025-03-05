@@ -30,7 +30,10 @@ export class WanderlogProvider {
 			name: placeMetadata?.name ?? placeDetails?.name,
 			description:
 				placeMetadata?.generatedDescription ?? placeMetadata?.description,
-			categories: placeMetadata?.categories,
+			categories:
+				placeDetails?.address_components.find(
+					(a) => a.long_name === placeDetails.name
+				)?.types ?? placeMetadata?.categories,
 			address: placeMetadata?.address ?? placeDetails?.formatted_address,
 			vicinity: placeDetails?.vicinity,
 			rating: placeMetadata?.rating,

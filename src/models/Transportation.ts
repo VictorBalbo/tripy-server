@@ -1,11 +1,12 @@
 import {
+	AfterLoad,
 	Column,
 	Entity,
-	JoinColumn,
 	ManyToOne,
 	PrimaryGeneratedColumn,
 } from 'typeorm'
 import { Place, Trip, type Coordinates } from '.'
+import { PlaceDetailService } from '../services/PlaceDetailService'
 
 @Entity()
 export class Transportation {
@@ -13,12 +14,14 @@ export class Transportation {
 	@PrimaryGeneratedColumn('uuid')
 	id: string
 
-	@ManyToOne(() => Place, (Place) => Place.id, { eager: true, cascade: true })
-	@JoinColumn()
-	origin: Place
+	@Column()
+	originId: string
 
-	@ManyToOne(() => Place, (Place) => Place.id, { eager: true, cascade: true })
-	@JoinColumn()
+	@Column()
+	destinationId: string
+
+	// Used as DTO
+	origin: Place
 	destination: Place
 
 	@Column('simple-json')
@@ -48,8 +51,14 @@ export class Transportation {
 	@Column({ nullable: true })
 	seat?: string
 
-  @ManyToOne(() => Trip, (trip) => trip.transportations)
-  trip: Trip
+	@ManyToOne(() => Trip, (trip) => trip.transportations)
+	trip: Trip
+
+	@AfterLoad()
+	async loadPlaces() {
+		this.origin = await PlaceDetailService.getPlaceById(this.originId)
+		this.destination = await PlaceDetailService.getPlaceById(this.destinationId)
+	}
 }
 export enum TransportTypes {
 	Bus = 'Bus',

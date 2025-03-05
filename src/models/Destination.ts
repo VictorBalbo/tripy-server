@@ -1,4 +1,5 @@
 import {
+	AfterLoad,
 	Column,
 	Entity,
 	JoinColumn,
@@ -7,7 +8,8 @@ import {
 	OneToOne,
 	PrimaryGeneratedColumn,
 } from 'typeorm'
-import { Activity, Coordinates, Housing, Trip } from '.'
+import { Activity, Housing, Place, Trip } from '.'
+import { PlaceDetailService } from '../services/PlaceDetailService'
 
 @Entity()
 export class Destination {
@@ -16,10 +18,9 @@ export class Destination {
 	id: string
 
 	@Column()
-	name: string
-
-	@Column(() => Coordinates)
-	coordinates: Coordinates
+	placeId: string
+	// Used as DTO
+	place: Place
 
 	@OneToOne(() => Housing, { eager: true, cascade: true })
 	@JoinColumn()
@@ -33,12 +34,16 @@ export class Destination {
 	activities?: Activity[]
 
 	@Column()
-	startDate?: Date
+	startDate: Date
 
 	@Column()
-	endDate?: Date
+	endDate: Date
 
 	@ManyToOne(() => Trip, (trip) => trip.destinations)
-	@JoinColumn()
 	trip: Trip
+
+	@AfterLoad()
+	async loadPlace() {
+		this.place = await PlaceDetailService.getPlaceById(this.placeId)
+	}
 }

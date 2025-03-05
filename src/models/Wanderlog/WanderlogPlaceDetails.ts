@@ -4,6 +4,7 @@ export interface WanderlogPlaceDetails {
 	formatted_address: string
 	vicinity: string
 	international_phone_number: string
+	address_components: AddressComponent[]
 	name: string
 	opening_hours: OpeningHours
 	url: string
@@ -14,6 +15,12 @@ export interface WanderlogPlaceDetails {
 			lng: number,
 		}
 	}
+}
+
+export interface AddressComponent {
+  long_name: string
+  short_name: string
+  types: string[]
 }
 
 export interface OpeningHours {

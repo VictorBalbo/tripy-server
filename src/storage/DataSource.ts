@@ -22,7 +22,7 @@ export const getDatabaseConnection = async () => {
 			
 			})
 			connection = await AppDataSource.initialize()
-			console.log('Connected')
+			console.log('SQL Connected')
 		}
 		return connection
 	} catch (e) {
