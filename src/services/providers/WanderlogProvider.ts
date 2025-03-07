@@ -3,6 +3,8 @@ import {
 	GetWanderlogAutocompleteResponse,
 	GetWanderlogPlaceDetailsResponse,
 	GetWanderlogPlaceMetadataResponse,
+	WanderlogPlaceDetails,
+	WanderlogPlaceMetadata,
 } from '../../models/Wanderlog/'
 
 export class WanderlogProvider {
@@ -17,13 +19,18 @@ export class WanderlogProvider {
 			(data) => data.json() as Promise<GetWanderlogPlaceMetadataResponse>
 		)
 
-		const [placeDetailsResponse, placeMetadataResponse] = await Promise.all([
-			detailsPromise,
-			metadataPromise,
-		])
-
-		const placeDetails = placeDetailsResponse?.data
-		const placeMetadata = placeMetadataResponse?.data?.find((p) => p)
+		let placeDetails: WanderlogPlaceDetails | undefined
+		let placeMetadata: WanderlogPlaceMetadata | undefined
+		try {
+			const [placeDetailsResponse, placeMetadataResponse] = await Promise.all([
+				detailsPromise,
+				metadataPromise,
+			])
+			placeDetails = placeDetailsResponse?.data
+			placeMetadata = placeMetadataResponse?.data?.find((p) => p)
+		} catch (e) {
+			console.error(e)
+		}
 
 		const place: Place = {
 			id: placeId,
@@ -31,9 +38,11 @@ export class WanderlogProvider {
 			description:
 				placeMetadata?.generatedDescription ?? placeMetadata?.description,
 			categories:
+				placeDetails?.types ??
 				placeDetails?.address_components.find(
 					(a) => a.long_name === placeDetails.name
-				)?.types ?? placeMetadata?.categories,
+				)?.types ??
+				placeMetadata?.categories,
 			address: placeMetadata?.address ?? placeDetails?.formatted_address,
 			vicinity: placeDetails?.vicinity,
 			rating: placeMetadata?.rating,
@@ -46,6 +55,10 @@ export class WanderlogProvider {
 			openingHours: placeDetails?.opening_hours,
 			mapsUrl: placeDetails?.url,
 			coordinates: placeDetails?.geometry.location,
+		}
+		place.categories = place.categories?.map(this.snakeToPascalCase)
+		if (!place.name || !place.coordinates) {
+			return
 		}
 		return place
 	}
@@ -74,5 +87,12 @@ export class WanderlogProvider {
 				}
 				return place
 			})
+	}
+
+	private static snakeToPascalCase(snake: string) {
+		return snake
+			.split('_') // Split by underscores
+			.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize each word
+			.join(' ') // Join without spaces
 	}
 }

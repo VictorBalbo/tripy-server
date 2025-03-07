@@ -4,6 +4,7 @@ export interface WanderlogPlaceDetails {
 	formatted_address: string
 	vicinity: string
 	international_phone_number: string
+	types?: string[]
 	address_components: AddressComponent[]
 	name: string
 	opening_hours: OpeningHours

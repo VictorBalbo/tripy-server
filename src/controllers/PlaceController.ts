@@ -9,7 +9,7 @@ PlaceController.get(getPlaceByIdUri, async (req, res, next) => {
 	try {
 		const t0 = performance.now()
 		console.log('Request', req.params.id)
-		const place = await PlaceDetailService.getPlaceById(req.params.id)
+		const place = await PlaceDetailService.getPlaceById(req.params.id, true)
 		res.json(place)
 		const t1 = performance.now()
 		console.log('Response', t1 - t0)
