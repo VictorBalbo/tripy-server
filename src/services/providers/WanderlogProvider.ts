@@ -9,7 +9,7 @@ import {
 
 export class WanderlogProvider {
 	static getPlaceById = async (placeId: string) => {
-		const URL_PLACE_DETAILS = `https://wanderlog.com/api/placesAPI/getPlaceDetails/v2?placeId=${placeId}&language=pt-BR`
+		const URL_PLACE_DETAILS = `https://wanderlog.com/api/placesAPI/getPlaceDetails/v2?placeId=${placeId}&language=en-US`
 		const URL_PLACE_METADATA = `https://wanderlog.com/api/places/metadata?placeIds=${placeId}&getDetails=true`
 
 		const detailsPromise = fetch(URL_PLACE_DETAILS).then(
