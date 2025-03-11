@@ -12,8 +12,8 @@ export class Price {
 			from: (value: string) => (value ? Number(value) : value), // Convert string to number
 		},
 	})
-	value: string
+	value?: string
 
 	@Column({ nullable: true })
-	currency: string
+	currency?: string
 }
