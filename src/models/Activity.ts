@@ -5,7 +5,7 @@ import {
 	ManyToOne,
 	PrimaryGeneratedColumn,
 } from 'typeorm'
-import { Destination, Place } from '.'
+import { Destination, Place, Price } from '.'
 import { PlaceDetailService } from '../services/PlaceDetailService'
 
 @Entity()
@@ -31,11 +31,8 @@ export class Activity {
 	@Column({ nullable: true })
 	notes?: string
 
-	@Column({ nullable: true })
-	currency?: string
-
-	@Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-	price?: number
+	@Column(() => Price)
+	price: Price
 
 	@ManyToOne(() => Destination, (destination) => destination.activities)
 	destination: Destination

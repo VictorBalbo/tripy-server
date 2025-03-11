@@ -1,5 +1,5 @@
 import { AfterLoad, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import { Place } from '.'
+import { Place, Price } from '.'
 import { PlaceDetailService } from '../services/PlaceDetailService'
 
 @Entity()
@@ -12,6 +12,9 @@ export class Housing {
 	placeId: string
 	// Used as DTO
 	place: Place
+
+	@Column({ nullable: true })
+	image?: string
 
 	@Column({ nullable: true })
 	name?: string
@@ -28,8 +31,8 @@ export class Housing {
 	@Column({ nullable: true })
 	notes?: string
 
-	@Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-	price?: number
+	@Column(() => Price)
+	price: Price
 
 	@AfterLoad()
 	async loadPlace() {

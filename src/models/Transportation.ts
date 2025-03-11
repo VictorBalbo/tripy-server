@@ -5,7 +5,7 @@ import {
 	ManyToOne,
 	PrimaryGeneratedColumn,
 } from 'typeorm'
-import { Place, Trip, type Coordinates } from '.'
+import { Place, Price, Trip, type Coordinates } from '.'
 import { PlaceDetailService } from '../services/PlaceDetailService'
 
 @Entity()
@@ -15,14 +15,20 @@ export class Transportation {
 	id: string
 
 	@Column()
+	originTerminalId: string
+	
+	@Column()
 	originId: string
+
+	@Column()
+	destinationTerminalId: string
 
 	@Column()
 	destinationId: string
 
 	// Used as DTO
-	origin: Place
-	destination: Place
+	originTerminal: Place
+	destinationTerminal: Place
 
 	@Column('simple-json')
 	path: Coordinates[]
@@ -36,8 +42,8 @@ export class Transportation {
 	@Column({ nullable: true })
 	endDate?: Date
 
-	@Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-	price?: number
+	@Column(() => Price)
+	price: Price
 
 	@Column({ nullable: true })
 	company?: string
@@ -56,8 +62,8 @@ export class Transportation {
 
 	@AfterLoad()
 	async loadPlaces() {
-		this.origin = await PlaceDetailService.getPlaceById(this.originId)
-		this.destination = await PlaceDetailService.getPlaceById(this.destinationId)
+		this.originTerminal = await PlaceDetailService.getPlaceById(this.originTerminalId)
+		this.destinationTerminal = await PlaceDetailService.getPlaceById(this.destinationTerminalId)
 	}
 }
 export enum TransportTypes {
