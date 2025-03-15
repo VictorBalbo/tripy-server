@@ -1,4 +1,4 @@
-import { Place } from '../../models'
+import { DistanceBetweenPlaces, Place } from '../../models'
 import { Redis } from '../../storage/Redis'
 
 export class TripyProvider {
@@ -10,5 +10,15 @@ export class TripyProvider {
 
 	static setPlaceById = async (place: Place, temp: boolean) => {
 		return await Redis.savePlaceAsync(place, temp)
+	}
+
+	static getDistanceAsync = async (placeId1: string, placeId2: string) => {
+		const place = await Redis.findDistanceAsync(placeId1, placeId2)
+
+		return place
+	}
+
+	static setDistanceAsync = async (distance: DistanceBetweenPlaces, temp: boolean) => {
+		return await Redis.saveDistanceAsync(distance, temp)
 	}
 }

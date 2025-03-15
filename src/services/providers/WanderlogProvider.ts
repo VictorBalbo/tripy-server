@@ -1,8 +1,8 @@
-import { Coordinates, Place } from '../../models'
+import { Coordinates, DistanceBetweenPlaces, Place } from '../../models'
 import {
-	GetWanderlogAutocompleteResponse,
-	GetWanderlogPlaceDetailsResponse,
-	GetWanderlogPlaceMetadataResponse,
+	GetWanderlogResponse,
+	WanderlogAutocompletePlaces,
+	WanderlogDistaceBetweenPlaces,
 	WanderlogPlaceDetails,
 	WanderlogPlaceMetadata,
 } from '../../models/Wanderlog/'
@@ -13,10 +13,12 @@ export class WanderlogProvider {
 		const URL_PLACE_METADATA = `https://wanderlog.com/api/places/metadata?placeIds=${placeId}&getDetails=true`
 
 		const detailsPromise = fetch(URL_PLACE_DETAILS).then(
-			(data) => data.json() as Promise<GetWanderlogPlaceDetailsResponse>
+			(data) =>
+				data.json() as Promise<GetWanderlogResponse<WanderlogPlaceDetails>>
 		)
 		const metadataPromise = fetch(URL_PLACE_METADATA).then(
-			(data) => data.json() as Promise<GetWanderlogPlaceMetadataResponse>
+			(data) =>
+				data.json() as Promise<GetWanderlogResponse<WanderlogPlaceMetadata[]>>
 		)
 
 		let placeDetails: WanderlogPlaceDetails | undefined
@@ -71,7 +73,10 @@ export class WanderlogProvider {
 	) => {
 		const URL = `https://wanderlog.com/api/placesAPI/autocomplete/v2?request={"input":"${name}","sessiontoken":"${token}","location":{"longitude":${coordinates.lng},"latitude":${coordinates.lat} },"radius":${radius},"language":"en"}`
 		const responsePromise = await fetch(URL).then(
-			(data) => data.json() as Promise<GetWanderlogAutocompleteResponse>
+			(data) =>
+				data.json() as Promise<
+					GetWanderlogResponse<WanderlogAutocompletePlaces[]>
+				>
 		)
 
 		const autocomplete = responsePromise.data
@@ -87,6 +92,56 @@ export class WanderlogProvider {
 				}
 				return place
 			})
+	}
+
+	static getDistanceBetweenPlaces = async (
+		origin: Place,
+		destination: Place
+	) => {
+		const data = {
+			fromPlace: {
+				id: origin.id,
+				latitude: origin.coordinates.lat,
+				longitude: origin.coordinates.lng,
+			},
+			toPlace: {
+				id: destination.id,
+				latitude: destination.coordinates.lat,
+				longitude: destination.coordinates.lng,
+			},
+			skipCache: false,
+		}
+		const URL = `https://wanderlog.com/api/directions/allDistanceInfoForPlace/v2?data=${JSON.stringify(
+			data
+		)}`
+		const responsePromise = await fetch(URL).then(
+			(data) =>
+				data.json() as Promise<
+					GetWanderlogResponse<WanderlogDistaceBetweenPlaces>
+				>
+		)
+		console.log(URL)
+		console.log(responsePromise)
+		const distance: DistanceBetweenPlaces = {
+			fromPlaceId: origin.id,
+			toPlaceId: destination.id,
+			driving: {
+				distance: responsePromise.data.driving.route.distance.value,
+				duration: responsePromise.data.driving.route.duration.value,
+				polyline: responsePromise.data.driving.route.polyline,
+			},
+			transit: {
+				distance: responsePromise.data.transit.route.distance.value,
+				duration: responsePromise.data.transit.route.duration.value,
+				polyline: responsePromise.data.transit.route.polyline,
+			},
+			walking: {
+				distance: responsePromise.data.walking.route.distance.value,
+				duration: responsePromise.data.walking.route.duration.value,
+				polyline: responsePromise.data.walking.route.polyline,
+			},
+		}
+		return distance
 	}
 
 	private static snakeToPascalCase(snake: string) {
