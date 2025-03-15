@@ -120,8 +120,7 @@ export class WanderlogProvider {
 					GetWanderlogResponse<WanderlogDistaceBetweenPlaces>
 				>
 		)
-		console.log(URL)
-		console.log(responsePromise)
+
 		const distance: DistanceBetweenPlaces = {
 			fromPlaceId: origin.id,
 			toPlaceId: destination.id,

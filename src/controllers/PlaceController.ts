@@ -57,7 +57,6 @@ PlaceController.get(getDistanceBetweenPlacesUri, async (req, res, next) => {
 		const origin = await PlaceDetailService.getPlaceById(req.params.originId, true)
 		const destination = await PlaceDetailService.getPlaceById(req.params.destinationId, true)
 		const distance = await PlaceDetailService.getDistanceBetweenPlaces(origin, destination)
-		console.log(distance)
 		res.json(distance)
 	} catch (e) {
 		next(e)
