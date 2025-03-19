@@ -19,7 +19,9 @@ export const getDatabaseConnection = async () => {
 				synchronize: true,
 				logging: false,
 				ssl: true,
-			
+				extra: {
+					timezone: 'UTC',
+				}
 			})
 			connection = await AppDataSource.initialize()
 			console.log('SQL Connected')

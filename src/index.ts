@@ -3,6 +3,7 @@ import cors from 'cors'
 import { PlaceController, TripController } from './controllers'
 import { port, environment } from './constants'
 import { getDatabaseConnection } from './storage'
+process.env.TZ = 'UTC'
 
 export const App = express()
 
