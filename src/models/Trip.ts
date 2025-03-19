@@ -16,7 +16,7 @@ export class Trip {
 	@Column()
 	name: string
 
-	@Column()
+	@Column({ type: 'timestamp without time zone' })
 	startDate: Date
 
 	@Column()
