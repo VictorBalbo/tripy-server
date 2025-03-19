@@ -1,4 +1,5 @@
 import {
+	AfterLoad,
 	Column,
 	Entity,
 	JoinColumn,
@@ -35,4 +36,12 @@ export class Trip {
 	})
 	@JoinColumn()
 	transportations: Transportation[]
+
+	@AfterLoad()
+	async loadPlace() {
+		console.log(this.startDate.toISOString())
+		console.log(new Date(this.startDate).toISOString())
+		console.log(this.startDate.toUTCString())
+		console.log(this.startDate.toISOString())
+	}
 }
