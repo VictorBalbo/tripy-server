@@ -7,6 +7,7 @@ import { Place } from './Place'
 import { Price } from './Price'
 import { Transportation } from './Transportation'
 import { Trip } from './Trip'
+import { Weather } from './Weather'
 
 export {
 	Activity,
@@ -18,4 +19,5 @@ export {
 	Price,
 	Transportation,
 	Trip,
+	Weather
 }

@@ -1,4 +1,4 @@
-import { Trip } from '../models'
+import { Destination, Trip } from '../models'
 import { getRepository } from '../storage/DataSource'
 
 export class TripService {
@@ -21,6 +21,19 @@ export class TripService {
 				transportations: {
 					startDate: 'ASC',
 				},
+			},
+		})
+	}
+
+	static getDestination = async (destinationId: string) => {
+		const destinationRepository = await getRepository(Destination)
+		return destinationRepository.findOne({
+			where: {
+				id: destinationId,
+			},
+			loadEagerRelations: false,
+			order: {
+				startDate: 'ASC',
 			},
 		})
 	}

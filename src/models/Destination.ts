@@ -39,6 +39,9 @@ export class Destination {
 	@Column()
 	endDate: Date
 
+	@Column({ nullable: true })
+	notes?: string
+
 	@ManyToOne(() => Trip, (trip) => trip.destinations)
 	trip: Trip
 
